@@ -15,10 +15,10 @@ const NavigationStacks = createBottomTabNavigator({
       tabBarLabel: "Restaurantes",
       tabBarIcon : ({ tintColor }) => (
         <Icon
-          type="material-community"
-          name="compass-outline"
-          size={22}
-          color={tintColor}
+          type  = "material-community"
+          name  = "compass-outline"
+          size  = {22}
+          color = {tintColor}
         />
       )
     })
@@ -29,10 +29,10 @@ const NavigationStacks = createBottomTabNavigator({
       tabBarLabel: 'Ranking',
       tabBarIcon : ({tintColor}) => (
         <Icon
-          type="material-community"
-          name="star-outline"
-          size={22}
-          color={tintColor}
+          type  = "material-community"
+          name  = "star-outline"
+          size  = {22}
+          color = {tintColor}
         />
       )
     })
@@ -43,10 +43,10 @@ const NavigationStacks = createBottomTabNavigator({
       tabBarLabel: 'Buscar',
       tabBarIcon : ({tintColor}) => (
         <Icon
-          type="material-community"
-          name="magnify"
-          size={22}
-          color={tintColor}
+          type  = "material-community"
+          name  = "magnify"
+          size  = {22}
+          color = {tintColor}
         />
       )
     })
@@ -57,10 +57,10 @@ const NavigationStacks = createBottomTabNavigator({
       tabBarLabel: 'Mi Perfil',
       tabBarIcon : ({tintColor}) => (
         <Icon
-          type="material-community"
-          name="home-outline"
-          size={22}
-          color={tintColor}
+          type  = "material-community"
+          name  = "home-outline"
+          size  = {22}
+          color = {tintColor}
         />
       )
     })

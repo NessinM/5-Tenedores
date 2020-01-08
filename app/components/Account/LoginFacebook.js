@@ -4,7 +4,7 @@ import * as firebase      from 'firebase'
 import * as Facebook      from 'expo-facebook';
 import { FacebookApi}     from '../../utils/Social'
 import Loading            from '../Loading'
-import { View } from 'react-native';
+import { View }           from 'react-native';
 
 export default function LoginFacebook(props) {
   const { navigation, toastRef }                = props
@@ -12,11 +12,7 @@ export default function LoginFacebook(props) {
 
   const login = async () => {
     await Facebook.initializeAsync(FacebookApi.application_id);
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-      FacebookApi.application_id,
-      { permissions : FacebookApi.permission}
-    )
-
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync( FacebookApi.application_id, { permissions : FacebookApi.permission} )
     if (type === 'success') {
       setIsVisibleLoading(true)
       const credentials = firebase.auth.FacebookAuthProvider.credential(token)
