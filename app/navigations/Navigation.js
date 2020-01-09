@@ -9,8 +9,8 @@ import searchScreenStacks           from "./SearchStacks"
 import accountScreenStacks          from "./AccountStacks"
 
 const NavigationStacks = createBottomTabNavigator({
-  restaurants: {
-    screen: restaurantsScreenStacks,
+  Restaurants: {
+    screen           : restaurantsScreenStacks,
     navigationOptions: () => ({
       tabBarLabel: "Restaurantes",
       tabBarIcon : ({ tintColor }) => (
@@ -23,9 +23,9 @@ const NavigationStacks = createBottomTabNavigator({
       )
     })
   },
-  topLists : {
-    screen : topListScreenStacks,
-    navigationOptions : () => ({
+  TopLists : {
+    screen           : topListScreenStacks,
+    navigationOptions: () => ({
       tabBarLabel: 'Ranking',
       tabBarIcon : ({tintColor}) => (
         <Icon
@@ -37,9 +37,9 @@ const NavigationStacks = createBottomTabNavigator({
       )
     })
   },
-  search : {
-    screen : searchScreenStacks,
-    navigationOptions : () => ({
+  Search : {
+    screen           : searchScreenStacks,
+    navigationOptions: () => ({
       tabBarLabel: 'Buscar',
       tabBarIcon : ({tintColor}) => (
         <Icon
@@ -51,9 +51,9 @@ const NavigationStacks = createBottomTabNavigator({
       )
     })
   },
-  account : {
-    screen : accountScreenStacks,
-    navigationOptions : () => ({
+  Account : {
+    screen           : accountScreenStacks,
+    navigationOptions: () => ({
       tabBarLabel: 'Mi Perfil',
       tabBarIcon : ({tintColor}) => (
         <Icon
@@ -67,8 +67,8 @@ const NavigationStacks = createBottomTabNavigator({
   }
 }, 
 {
-  initialRouteName: 'account',
-  order           : ["restaurants", "topLists", "search", "account"],
+  initialRouteName: 'Restaurants',
+  order           : ["Restaurants", "TopLists", "Search", "Account"],
   tabBarOptions   : {
     inactiveTintColor: "#646464",
     activeTintColor  : "#00a680"

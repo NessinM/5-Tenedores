@@ -7,6 +7,7 @@ import * as ImagePicker                 from 'expo-image-picker'
 
 export default function InfoUser(props) {
   const {
+    userInfo,
     userInfo :  {uid, displayName, email, photoURL},
     setReLoadData,
     toastRef,
@@ -14,6 +15,7 @@ export default function InfoUser(props) {
     setTextLoading
   } = props
 
+  console.log('userInfo', userInfo)
   const changeAvatar =  async () => {
     const resultPermissions       = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     const resultPermissionsCamera = resultPermissions.permissions.cameraRoll.status
@@ -29,32 +31,30 @@ export default function InfoUser(props) {
       if (result.cancelled) {
         toastRef.current.show('Has cerrado la galeria de imagenes')
       } else {
-        uploadImage(result.url, uid).then(() => {
-          updatephotoUrl(uid)
+        console.log(result)
+        uploadImage(result.uri, uid).then(() => {
+          updatePhotoUrl(uid)
         })
       }
     }
   }
 
-  const uploadImage = async (url, nameImage) => {
+  const uploadImage = async (uri, nameImage) => {
     setTextLoading('Actualizando avatar')
     setIsLoading(true)
-    const response = await fetch(url);
+    const response = await fetch(uri);
     const blob     = await response.blob()
-    const ref      = firebase.storage().ref().child(`vatar/${nameImage}`)
+    const ref      = firebase.storage().ref().child(`avatar/${nameImage}`)
     return ref.put(blob)
   }
 
-  const updatephotoUrl = uid => {
+  const updatePhotoUrl = uid => {
     firebase
       .storage()
       .ref(`avatar/${uid}`)
       .getDownloadURL()
-      .then(async result=> {
-        const update = {
-          photoURL  : result
-        }
-
+      .then(async result => {
+        const update = { photoURL  : result }
         await firebase.auth().currentUser.updateProfile(update)
         setReLoadData(true)
         setIsLoading(false)
