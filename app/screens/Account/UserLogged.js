@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef}    from 'react'
 import * as firebase         from 'firebase'
-import { StyleSheet, View }  from 'react-native';
+import { StyleSheet, View, Alert }  from 'react-native';
 import { Button }            from 'react-native-elements'
 import Toast                 from 'react-native-easy-toast'
 import Loading               from '../../components/Loading'
@@ -23,6 +23,23 @@ export default function UserLogged() {
     setReLoadData(false)
   }, [reLoadData])
 
+  const signOut = () => {
+    Alert.alert(
+      'Cerrar Sesión',
+      '¿ Realmente deseas salir de la aplicacion?',
+      [
+        {
+          text  : 'Cancelar',
+          styles: 'cancel'
+        },
+        {
+          text   : 'Cerrar sesión',
+          onPress: () => firebase.auth().signOut()
+        }
+      ], { cancelable : false }
+    )
+  }
+
   return (
     <View style={styles.viewUserInfo}> 
       <InfoUser 
@@ -40,7 +57,7 @@ export default function UserLogged() {
       <Button 
         title       = "Cerrar sesión"
         titleStyle  = {styles.btnCloseSessionText}
-        onPress     = {() => firebase.auth().signOut()}
+        onPress     = {signOut}
         buttonStyle = {styles.btnCloseSession}
       />
       <Toast ref={toastRef} position="center" opacity={0.5}></Toast>

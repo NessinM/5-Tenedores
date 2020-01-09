@@ -89,7 +89,7 @@ function UploadImage(props) {
       'Estas seguro de que  deseas remover esta imagen',
       [
         {
-          text  : 'Cancel',
+          text  : 'Cancelar',
           styles: 'cancel'
         },
         {
