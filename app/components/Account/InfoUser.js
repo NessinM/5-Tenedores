@@ -15,7 +15,7 @@ export default function InfoUser(props) {
     setTextLoading
   } = props
 
-  console.log('userInfo', userInfo)
+
   const changeAvatar =  async () => {
     const resultPermissions       = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     const resultPermissionsCamera = resultPermissions.permissions.cameraRoll.status
@@ -31,7 +31,6 @@ export default function InfoUser(props) {
       if (result.cancelled) {
         toastRef.current.show('Has cerrado la galeria de imagenes')
       } else {
-        console.log(result)
         uploadImage(result.uri, uid).then(() => {
           updatePhotoUrl(uid)
         })

@@ -6,18 +6,64 @@ import * as ImagePicker                                   from 'expo-image-picke
 import MapView                                            from 'react-native-maps'
 import Modal                                              from '../Modal'
 import * as Location                                      from 'expo-location'
+import uuid                                               from 'uuid/v4'
+import { firebaseApp }                                    from '../../utils/firebase'
+import firebase                                           from 'firebase/app'
+import "firebase/firestore"
 
-
+const db          = firebase.firestore(firebaseApp)
 const WidthScreen = Dimensions.get('window').width
 
 export default function AddRestaurantForm (props) {
-  const {navigation, toastRef, setIsVisibleLoading}        = props
+  const {navigation, toastRef, setIsLoading}               = props
   const [imagesSelected, setImagesSelected]                = useState([])
   const [restaurantName , setRestaurantName]               = useState('')
   const [restaurantAddress , setRestaurantAddress]         = useState('')
   const [restaurantDescription , setRestaurantDescription] = useState('')
   const [isVisibleMap,  setIsVisibleMap ]                  = useState(false)
   const [locationRestaurant, setLocationRestaurant]        = useState(null)
+
+  const addRestaurant = () => {
+    if (!restaurantName || !restaurantAddress || !restaurantDescription) toastRef.current.show('Todos los campos del formulario son obligatorios')
+    else if (imagesSelected.length === 0) toastRef.current.show('El restaurante tiene que tener por lo menos una foto ')
+    else if (!locationRestaurant) toastRef.current.show('Tienes que seleccionar la localizacion en el mapa')
+    else {
+      setIsLoading(true)
+      uploadImagesStorage(imagesSelected).then( arrayImages => {
+        db.collection('restaurants').add({
+          name          : restaurantName,
+          address       : restaurantAddress,
+          description   : restaurantDescription,
+          location      : locationRestaurant,
+          images        : arrayImages,
+          rating        : 0,
+          quantityVoting: 0,
+          createAt      : new Date(),
+          createBy      : firebase.auth().currentUser.uid
+        }).then(() => {
+          setIsLoading(false)
+          navigation.navigate('Restaurants')
+        }).catch(() => {
+          setIsLoading(false)
+          toastRef.current.show('Error al subir restaurante, intentelo mas tarde')
+        })
+      })
+    }
+  }
+
+  const uploadImagesStorage = async imageArray => {
+    const imageBlob = []
+    await Promise.all(imageArray.map(async image => {
+      const response = await fetch(image)
+      const blob     = await response.blob()
+      const ref      = firebase.storage().ref('restaurant-images').child(uuid())
+      await ref.put(blob).then(result => {
+        imageBlob.push(result.metadata.name)
+      })
+    }))
+
+    return imageBlob
+  }
 
   return (
     <ScrollView>
@@ -34,6 +80,13 @@ export default function AddRestaurantForm (props) {
         setImagesSelected = {setImagesSelected}
         toastRef          = {toastRef}
       />
+
+      <Button
+        title       = 'Crear restautante'
+        onPress     = {addRestaurant}
+        buttonStyle = {styles.btnAddRestaurant}
+      />
+
       <Map 
         isVisibleMap          = {isVisibleMap}
         setIsVisibleMap       = {setIsVisibleMap}
@@ -299,6 +352,10 @@ const styles = StyleSheet.create({
     paddingLeft: 5
   },
   viewMapButtonCancel : {
-    backgroundColor : '#a60d0d'
+    backgroundColor: '#a60d0d'
+  },
+  btnAddRestaurant : {
+    backgroundColor: '#00a680',
+    margin         : 20
   }
 })

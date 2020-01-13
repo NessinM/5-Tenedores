@@ -24,7 +24,6 @@ export default function LoginFacebook(props) {
               })
               .catch ((err) => {
                 toastRef.current.show(`Error : ${err.message}`)
-                console.log(err.message)
               })
     } else if (type === 'cancel' ) toastRef.current.show('Inicio de sesión cancelado')
     else  toastRef.current.show('Error desconocido, Intentelo mas tarde')
